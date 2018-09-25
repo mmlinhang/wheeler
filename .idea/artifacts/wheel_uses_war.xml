@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="wheel-uses:war">
-    <output-path>$PROJECT_DIR$/wheel-uses/target</output-path>
-    <root id="archive" name="wheel-uses.war">
-      <element id="artifact" artifact-name="wheel-uses:war exploded" />
-    </root>
-  </artifact>
-</component>
