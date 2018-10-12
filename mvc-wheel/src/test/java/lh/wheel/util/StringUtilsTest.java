@@ -1,4 +1,4 @@
-package lh.wheeler.util;
+package lh.wheel.util;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;

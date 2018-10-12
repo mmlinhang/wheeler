@@ -1,6 +1,6 @@
-package lh.wheeler.helper;
+package lh.wheel.helper;
 
-import lh.wheeler.entity.Student;
+import lh.wheel.entity.Student;
 import org.junit.Before;
 import org.junit.Test;
 

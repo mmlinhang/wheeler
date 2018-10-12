@@ -1,6 +1,6 @@
-package lh.wheeler.helper;
+package lh.wheel.helper;
 
-import lh.wheeler.util.PropsUtils;
+import lh.wheel.util.PropsUtils;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;

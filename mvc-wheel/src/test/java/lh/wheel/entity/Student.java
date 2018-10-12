@@ -1,4 +1,4 @@
-package lh.wheeler.entity;
+package lh.wheel.entity;
 
 public class Student {
     private int id;
