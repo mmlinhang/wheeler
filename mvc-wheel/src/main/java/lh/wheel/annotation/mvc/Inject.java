@@ -1,4 +1,4 @@
-package lh.wheel.annotation;
+package lh.wheel.annotation.mvc;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,6 +1,6 @@
 package lh.wheel.helper;
 
-import lh.wheel.annotation.Action;
+import lh.wheel.annotation.mvc.Action;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Method;

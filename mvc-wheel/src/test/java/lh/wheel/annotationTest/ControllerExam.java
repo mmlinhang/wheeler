@@ -1,8 +1,9 @@
 package lh.wheel.annotationTest;
 
-import lh.wheel.annotation.Action;
-import lh.wheel.annotation.Controller;
-import lh.wheel.annotation.Inject;
+import lh.wheel.annotation.mvc.Action;
+import lh.wheel.annotation.mvc.Controller;
+import lh.wheel.annotation.mvc.Inject;
+import lh.wheel.constant.RequestMethod;
 
 @Controller
 public class ControllerExam {
@@ -14,4 +15,9 @@ public class ControllerExam {
      */
 //    @Inject
 //    private NotABean notABean;
+
+    @Action(method = RequestMethod.GET, url = "listStudents")
+    public void listStudents() {
+
+    }
 }

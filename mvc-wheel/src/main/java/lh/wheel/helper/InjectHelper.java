@@ -1,6 +1,6 @@
 package lh.wheel.helper;
 
-import lh.wheel.annotation.Inject;
+import lh.wheel.annotation.mvc.Inject;
 import lh.wheel.util.ReflectionUtils;
 import org.apache.log4j.Logger;
 

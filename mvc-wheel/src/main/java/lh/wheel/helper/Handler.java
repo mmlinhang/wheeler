@@ -35,4 +35,9 @@ public class Handler {
 
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        return method.hashCode() + url.hashCode();
+    }
 }

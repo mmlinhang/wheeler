@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -26,9 +27,9 @@ public class ClassUtils {
      * 加载类
      * 封装了类加载失败的情况
      */
-    public static Class loadClass(String className) {
+    public static Class loadClass(String className, boolean initialize) {
         try {
-            return Class.forName(className, false, getClassLoader());
+            return Class.forName(className, initialize, getClassLoader());
         }
         catch (ClassNotFoundException e) {
             LOGGER.error(className + " 类加载失败");
@@ -86,7 +87,7 @@ public class ClassUtils {
             if(file_1.isFile() && fileName.endsWith(".class")) {
                 String className = basePath.replace("/", ".") + "."
                         + fileName.substring(0, fileName.lastIndexOf(".class"));
-                classSet.add(loadClass(className));
+                classSet.add(loadClass(className, false));
             }
             else
                 loadFileClass(classSet, filePath, basePath+"/"+fileName);
@@ -107,7 +108,7 @@ public class ClassUtils {
                 if(entryName.endsWith(".class")) {
                     String className =
                             entryName.substring(0, entryName.lastIndexOf(".")).replace("/", ".");
-                    classSet.add(loadClass(className));
+                    classSet.add(loadClass(className, false));
                 }
             }
         }
@@ -117,4 +118,34 @@ public class ClassUtils {
         }
     }
 
+    /**
+     * 得到 superClass 的所有子类 Class对象
+     * @param classSet 项目类集
+     * @param superClass 父类 Class 对象
+     */
+    public static Set<Class> getClassSetBySuperClass(Set<Class> classSet, Class superClass) {
+        Set<Class> subClassSet = new HashSet<Class>();
+        for(Class clazz:classSet) {
+            if(superClass.isAssignableFrom(clazz))
+                subClassSet.add(clazz);
+        }
+
+        return subClassSet;
+    }
+
+    /**
+     * 获取带有 annotationClass 注解的类对象
+     * @param classSet
+     * @param annotationClass
+     * @return
+     */
+    public static Set<Class> getClassSetWithAnnotation(Set<Class> classSet, Class<? extends Annotation> annotationClass) {
+        Set<Class> annotatedClassSet = new HashSet<Class>();
+        for(Class clazz:classSet) {
+            if(clazz.isAnnotationPresent(annotationClass))
+                annotatedClassSet.add(clazz);
+        }
+
+        return annotatedClassSet;
+    }
 }
