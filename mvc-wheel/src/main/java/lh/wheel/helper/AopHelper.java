@@ -1,7 +1,9 @@
 package lh.wheel.helper;
 
 import lh.wheel.annotation.aop.Aspect;
+import lh.wheel.annotation.mvc.Service;
 import lh.wheel.aop.advice.Advice;
+import lh.wheel.aop.advice.TransactionAdvice;
 import lh.wheel.aop.proxy.ProxyManager;
 import lh.wheel.util.ClassUtils;
 import lh.wheel.util.ReflectionUtils;
@@ -20,21 +22,44 @@ public class AopHelper {
     }
 
     /**
-     * 获取被用户注解的增强对象和被代理目标类的映射
+     * 获取增强对象和被代理目标类的映射
+     * 目前，增强对象包括用户自定义增强和事务增强
      */
     private static Map<Advice, Set<Class>> getTargetClassMap(Set<Class> classSet) {
         Map<Advice, Set<Class>> targetClassMap = new HashMap<Advice, Set<Class>>();
+        targetClassMap.putAll(getCustomedTargetClassMap(classSet));
+        targetClassMap.putAll(getTransactionTargetClassMap(classSet));
+
+        return targetClassMap;
+    }
+
+    /**
+     * 获取被用户注解的增强对象和被代理目标类的映射
+     */
+    private static Map<Advice, Set<Class>> getCustomedTargetClassMap(Set<Class> classSet) {
+        Map<Advice, Set<Class>> customedTargetClassMap = new HashMap<Advice, Set<Class>>();
 
         Set<Class> adviceClassSet = ClassUtils.getClassSetBySuperClass(classSet, Advice.class);
         for(Class clazz:adviceClassSet) {
             if(clazz.isAnnotationPresent(Aspect.class)) {
                 Class targetAnnotation = ((Aspect) clazz.getAnnotation(Aspect.class)).value();
                 Set<Class> targetClassSet = ClassUtils.getClassSetWithAnnotation(classSet, targetAnnotation);
-                targetClassMap.put((Advice) ReflectionUtils.newInstance(clazz), targetClassSet);
+                customedTargetClassMap.put((Advice) ReflectionUtils.newInstance(clazz), targetClassSet);
             }
         }
 
-        return targetClassMap;
+        return customedTargetClassMap;
+    }
+
+    /**
+     * 获得事务管理增强和service类的映射
+     */
+    private static Map<Advice, Set<Class>> getTransactionTargetClassMap(Set<Class> classSet) {
+        Map<Advice, Set<Class>> transactionTargetClassMap = new HashMap<Advice, Set<Class>>();
+        Set<Class> serviceClassSet = ClassUtils.getClassSetWithAnnotation(classSet, Service.class);
+        transactionTargetClassMap.put(new TransactionAdvice(), serviceClassSet);
+
+        return transactionTargetClassMap;
     }
 
     /**

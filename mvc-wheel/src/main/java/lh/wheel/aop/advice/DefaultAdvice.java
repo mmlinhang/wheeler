@@ -32,7 +32,8 @@ public abstract class DefaultAdvice extends Advice {
                 result = adviceChain.doAdviceChain();
         }
         catch (Throwable throwable) {
-            error(targetObject, method, methodProxy, params);
+            error(targetObject, method, methodProxy, throwable, params);
+            throw throwable;
         }
         finally {
             end(targetObject, method, methodProxy, params);
@@ -63,7 +64,7 @@ public abstract class DefaultAdvice extends Advice {
 
     }
 
-    public void error(Object targetObject, Method method, MethodProxy methodProxy, Object... params) throws Throwable {
+    public void error(Object targetObject, Method method, MethodProxy methodProxy, Throwable throwable, Object... params) throws Throwable {
 
     }
 

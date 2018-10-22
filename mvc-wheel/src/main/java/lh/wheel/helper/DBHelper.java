@@ -46,7 +46,6 @@ public final class DBHelper {
 
     /**
      * 得到 connection
-     * @return
      */
     public static Connection getConnection() {
         Connection coon = COON_HOLDER.get();
@@ -215,6 +214,59 @@ public final class DBHelper {
             catch (IOException e) {
                 LOGGER.error("文件流关闭失败");
             }
+        }
+    }
+
+    /**
+     * 开启事务
+     */
+    public static void startTransaction() {
+        Connection conn = getConnection();
+        try {
+            conn.setAutoCommit(false);
+        }
+        catch (SQLException e) {
+            LOGGER.error("开启事务失败");
+            throw new RuntimeException(e);
+        }
+        finally {
+            COON_HOLDER.set(conn);
+        }
+    }
+
+    /**
+     * 提交事务
+     */
+    public static void commitTransaction() {
+        Connection conn = getConnection();
+        try {
+            conn.commit();
+            conn.close();
+        }
+        catch (SQLException e) {
+            LOGGER.error("事务提交失败");
+            throw new RuntimeException(e);
+        }
+        finally {
+            COON_HOLDER.remove();
+        }
+    }
+
+    /**
+     * 回滚事务
+     */
+    public static void rollBackTransaction() {
+        Connection conn = getConnection();
+        try {
+            conn.rollback();
+            conn.close();
+        }
+        catch (SQLException e) {
+            LOGGER.error("事务回滚失败");
+            throw new RuntimeException(e);
+        }
+        finally {
+            COON_HOLDER.remove();
         }
     }
 }
