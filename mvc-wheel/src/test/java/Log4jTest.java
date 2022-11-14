@@ -8,6 +8,6 @@ public class Log4jTest {
         Logger logger = Logger.getLogger(Log4jTest.class);
         logger.debug("it is debug logger");
         logger.info("it is info logger");
-        logger.error("it is error logger");
+        // test
     }
 }
