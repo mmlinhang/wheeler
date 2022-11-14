@@ -9,5 +9,6 @@ public class Log4jTest {
         logger.debug("it is debug logger");
         logger.info("it is info logger");
         logger.error("it is error logger");
+        // test
     }
 }
